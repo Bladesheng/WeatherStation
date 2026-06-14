@@ -1,6 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using WeatherStation.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+var connectionString = builder.Configuration.GetConnectionString("PostgresConnection") ??
+                       throw new InvalidOperationException("`PostgresConnection` string not found");
+
+builder.Services.AddDbContextPool<AppDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
 
 var app = builder.Build();
 

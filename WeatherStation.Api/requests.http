@@ -1,0 +1,13 @@
+POST http://localhost:5087/api/readings
+Content-Type: application/json
+password: dev
+
+
+{
+  "temperature_bmp": 23.5,
+  "temperature_dht": 24.1,
+  "pressure_bmp": 1013.25,
+  "humidity_dht": 58.3
+}
+
+###
