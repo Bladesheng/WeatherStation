@@ -12,6 +12,8 @@ builder.Services.AddDbContextPool<AppDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
