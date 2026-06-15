@@ -1,3 +1,11 @@
+GET http://localhost:5087/api/readings/24h
+
+###
+
+GET http://localhost:5087/api/readings/month/2026/06
+
+###
+
 POST http://localhost:5087/api/readings
 Content-Type: application/json
 password: dev

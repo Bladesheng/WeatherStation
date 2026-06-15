@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeatherStation.Api.Data;
 using WeatherStation.Api.Dtos;
+using WeatherStation.Api.Helpers;
 using WeatherStation.Api.Models;
 
 namespace WeatherStation.Api.Controllers;
@@ -18,9 +19,24 @@ public class ReadingsController(
     {
         var readings = await dbContext.Readings
             .Where(r => r.CreatedAt >= DateTime.UtcNow.AddHours(-24))
+            .OrderBy(r => r.CreatedAt)
             .ToListAsync();
 
         return readings;
+    }
+
+    [HttpGet("month/{year:int}/{month:int}")]
+    public async Task<IEnumerable<Reading>> GetMonth(int year, int month)
+    {
+        var start = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var end = start.AddMonths(1);
+
+        var readings = await dbContext.Readings
+            .Where(r => r.CreatedAt >= start && r.CreatedAt < end)
+            .OrderBy(r => r.CreatedAt)
+            .ToListAsync();
+
+        return Lttb.Downsample(readings);
     }
 
     [HttpPost]
