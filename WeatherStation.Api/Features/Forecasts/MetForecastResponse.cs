@@ -1,49 +1,15 @@
 using System.Text.Json.Serialization;
 
-namespace WeatherStation.Api.Dtos;
+namespace WeatherStation.Api.Features.Forecasts;
 
 public record MetForecastResponse(
-    // [property: JsonPropertyName("type")] string Type,
-
-    // [property: JsonPropertyName("geometry")]
-    // ForecastGeometry Geometry,
     [property: JsonPropertyName("properties")]
     ForecastProperties Properties
 );
 
-public record ForecastGeometry(
-    [property: JsonPropertyName("type")] string Type,
-    [property: JsonPropertyName("coordinates")]
-    double[] Coordinates
-);
-
 public record ForecastProperties(
-    // [property: JsonPropertyName("meta")] ForecastMeta Meta,
     [property: JsonPropertyName("timeseries")]
     ForecastTimestep[] Timeseries
-);
-
-public record ForecastMeta(
-    [property: JsonPropertyName("updated_at")]
-    DateTimeOffset UpdatedAt,
-    [property: JsonPropertyName("units")] ForecastUnits Units
-);
-
-public record ForecastUnits(
-    [property: JsonPropertyName("air_pressure_at_sea_level")]
-    string AirPressureAtSeaLevel,
-    [property: JsonPropertyName("air_temperature")]
-    string AirTemperature,
-    [property: JsonPropertyName("cloud_area_fraction")]
-    string CloudAreaFraction,
-    [property: JsonPropertyName("precipitation_amount")]
-    string PrecipitationAmount,
-    [property: JsonPropertyName("relative_humidity")]
-    string RelativeHumidity,
-    [property: JsonPropertyName("wind_from_direction")]
-    string WindFromDirection,
-    [property: JsonPropertyName("wind_speed")]
-    string WindSpeed
 );
 
 public record ForecastTimestep(

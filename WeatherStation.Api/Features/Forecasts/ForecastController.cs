@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherStation.Api.Services;
 
-namespace WeatherStation.Api.Controllers;
+namespace WeatherStation.Api.Features.Forecasts;
 
 [ApiController]
 [Route("[controller]")]

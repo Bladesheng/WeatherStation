@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WeatherStation.Api.Models;
+using WeatherStation.Api.Features.Readings;
 
 namespace WeatherStation.Api.Data;
 

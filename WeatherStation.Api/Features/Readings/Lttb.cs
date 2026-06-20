@@ -1,6 +1,4 @@
-using WeatherStation.Api.Models;
-
-namespace WeatherStation.Api.Helpers;
+namespace WeatherStation.Api.Features.Readings;
 
 public static class Lttb
 {

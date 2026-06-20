@@ -1,4 +1,4 @@
-namespace WeatherStation.Api.Options;
+namespace WeatherStation.Api.Features.Forecasts;
 
 public class MetOptions
 {

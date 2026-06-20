@@ -1,4 +1,4 @@
-namespace WeatherStation.Api.Dtos;
+namespace WeatherStation.Api.Features.Astronomy;
 
 public record SunMoonDay(
     DateOnly Date,

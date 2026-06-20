@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WeatherStation.Api.Data;
-using WeatherStation.Api.Options;
-using WeatherStation.Api.Services;
+using WeatherStation.Api.Features.Forecasts;
 
 var builder = WebApplication.CreateBuilder(args);
 

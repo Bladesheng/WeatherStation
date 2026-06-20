@@ -1,4 +1,4 @@
-namespace WeatherStation.Api.Models;
+namespace WeatherStation.Api.Features.Readings;
 
 public class Reading
 {

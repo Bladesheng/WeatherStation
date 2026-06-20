@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using WeatherStation.Api.Data;
-using WeatherStation.Api.Dtos;
-using WeatherStation.Api.Helpers;
-using WeatherStation.Api.Models;
 
-namespace WeatherStation.Api.Controllers;
+namespace WeatherStation.Api.Features.Readings;
 
 [ApiController]
 [Route("api/readings")]

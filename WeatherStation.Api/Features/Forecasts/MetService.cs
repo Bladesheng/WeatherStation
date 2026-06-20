@@ -1,10 +1,9 @@
 using System.Net;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WeatherStation.Api.Dtos;
-using WeatherStation.Api.Options;
+using WeatherStation.Api.Features.Astronomy;
 
-namespace WeatherStation.Api.Services;
+namespace WeatherStation.Api.Features.Forecasts;
 
 public class MetService(
     HttpClient httpClient,

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WeatherStation.Api.Dtos;
+namespace WeatherStation.Api.Features.Astronomy;
 
 public record MetSunriseMoonResponse(
     [property: JsonPropertyName("properties")]

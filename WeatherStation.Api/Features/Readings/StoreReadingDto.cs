@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WeatherStation.Api.Dtos;
+namespace WeatherStation.Api.Features.Readings;
 
 public record StoreReadingDto
 {
