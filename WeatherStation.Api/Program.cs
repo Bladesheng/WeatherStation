@@ -1,7 +1,25 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WeatherStation.Api.Data;
+using WeatherStation.Api.Options;
+using WeatherStation.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.Configure<MetOptions>(
+    builder.Configuration.GetSection(MetOptions.SectionName)
+);
+
+builder.Services.AddHttpClient<MetService>((serviceProvider, client) =>
+{
+    var metOptions = serviceProvider
+        .GetRequiredService<IOptions<MetOptions>>()
+        .Value;
+
+    client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", metOptions.UserAgent);
+    client.BaseAddress = new Uri("https://api.met.no/");
+});
 
 builder.Services.AddControllers();
 
