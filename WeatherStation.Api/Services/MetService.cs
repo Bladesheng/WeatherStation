@@ -17,6 +17,9 @@ public class MetService(
     private static DateTimeOffset? _lastModified;
     private static DateTimeOffset? _expires;
 
+    // MET TOS says maximum is 20 req/s.
+    private static readonly SemaphoreSlim _semaphore = new(10, 10);
+
     public async Task<List<ForecastTimestep>> GetForecastTimeseriesAsync()
     {
         if (
@@ -74,5 +77,84 @@ public class MetService(
         cache.Set(CacheKeyForecastTimeseries, timeseries);
 
         return timeseries;
+    }
+
+    public async Task<List<SunMoonDay>> GetSunMoonAsync()
+    {
+        return (await Task.WhenAll(
+                Enumerable.Range(0, 10)
+                    .Select(async i =>
+                        {
+                            var date = DateOnly.FromDateTime(DateTime.Today.AddDays(i));
+
+                            var sunTask = GetSunriseSunsetAsync(date);
+                            var moonTask = GetMoonPhaseAsync(date);
+                            var (sun, moonPhase) = (await sunTask, await moonTask);
+
+                            return new SunMoonDay(
+                                date,
+                                sun.Sunrise,
+                                sun.Sunset,
+                                moonPhase
+                            );
+                        }
+                    ))
+            )
+            .ToList();
+    }
+
+    private async Task<SunriseSunset> GetSunriseSunsetAsync(DateOnly date)
+    {
+        var cacheKey = $"sunriseSun_{date}";
+        if (cache.TryGetValue(cacheKey, out SunriseSunset? cached) && cached != null)
+            return cached;
+
+        await _semaphore.WaitAsync();
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<MetSunriseSunResponse>(
+                             $"weatherapi/sunrise/3.0/sun?lat={options.Value.Latitude}&lon={options.Value.Longitude}&date={date.ToString("yyyy-MM-dd")}"
+                         )
+                         ?? throw new InvalidOperationException("Sunrise sun response was null");
+
+            var sunriseSunset = new SunriseSunset(
+                result.Properties.Sunrise.Time,
+                result.Properties.Sunset.Time
+            );
+
+            cache.Set(cacheKey, sunriseSunset, date.AddDays(1).ToDateTime(TimeOnly.MaxValue));
+
+            return sunriseSunset;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    private async Task<double> GetMoonPhaseAsync(DateOnly date)
+    {
+        var cacheKey = $"sunriseMoon_{date}";
+        if (cache.TryGetValue(cacheKey, out double cached))
+            return cached;
+
+        await _semaphore.WaitAsync();
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<MetSunriseMoonResponse>(
+                             $"weatherapi/sunrise/3.0/moon?lat={options.Value.Latitude}&lon={options.Value.Longitude}&date={date.ToString("yyyy-MM-dd")}"
+                         )
+                         ?? throw new InvalidOperationException("Sunrise moon response was null");
+
+            var moonPhase = result.Properties.MoonPhase;
+
+            cache.Set(cacheKey, moonPhase, date.AddDays(1).ToDateTime(TimeOnly.MaxValue));
+
+            return moonPhase;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 }

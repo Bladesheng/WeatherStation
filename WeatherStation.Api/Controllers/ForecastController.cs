@@ -13,6 +13,13 @@ public class ForecastController(
     public async Task<ActionResult> Forecast()
     {
         var forecast = await metService.GetForecastTimeseriesAsync();
-        return Ok(forecast);
+
+        var sunMoon = await metService.GetSunMoonAsync();
+
+        return Ok(new
+        {
+            forecast,
+            sunMoon
+        });
     }
 }
