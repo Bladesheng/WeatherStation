@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+@import '@bprogress/core/css';
+
+@plugin '@iconify/tailwind4';
+
+@plugin 'daisyui' {
+	themes:
+		light --default,
+		night --prefersdark;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'light';
+	--color-primary: oklch(0.65351 0.138 232.661);
+}
+
+@plugin 'daisyui/theme' {
+	name: 'night';
+	--radius-selector: 0.5rem;
+}
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
+
+:root {
+	--bprogress-color: var(--color-primary);
+}
