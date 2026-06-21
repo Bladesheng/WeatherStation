@@ -40,6 +40,7 @@
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
 		"tailwindcss": "^4.3.1",
+		"temporal-polyfill": "^1.0.1",
 		"typescript": "7.0.1-rc",
 		"valibot": "^1.4.1",
 		"vite": "^8.0.16"

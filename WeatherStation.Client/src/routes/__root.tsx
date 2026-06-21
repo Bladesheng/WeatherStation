@@ -4,7 +4,7 @@ import {TanStackRouterDevtoolsPanel} from '@tanstack/react-router-devtools';
 import {TanStackDevtools} from '@tanstack/react-devtools';
 import {ReactQueryDevtoolsPanel} from '@tanstack/react-query-devtools';
 import type {QueryClient} from '@tanstack/react-query';
-// import {Header} from '@/components/Header.tsx';
+import {Header} from '@/components/Header.tsx';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -17,7 +17,7 @@ function RootComponent() {
 		<>
 			<HeadContent />
 
-			{/*<Header />*/}
+			<Header />
 
 			<Outlet />
 
