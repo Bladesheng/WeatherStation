@@ -13,7 +13,7 @@ export function Header() {
 					<div className="flex justify-center gap-1 sm:gap-2">
 						<Link
 							to="/"
-							className="btn px-2 text-xl btn-ghost sm:px-4"
+							className="btn btn-ghost px-2 text-xl sm:px-4"
 							activeProps={{className: 'btn-active'}}
 						>
 							Dashboard
@@ -21,7 +21,7 @@ export function Header() {
 
 						<Link
 							to="/history"
-							className="btn px-2 text-xl btn-ghost sm:px-4"
+							className="btn btn-ghost px-2 text-xl sm:px-4"
 							activeProps={{className: 'btn-active'}}
 						>
 							History
@@ -29,10 +29,18 @@ export function Header() {
 
 						<Link
 							to="/forecast"
-							className="btn px-2 text-xl btn-ghost sm:px-4"
+							className="btn btn-ghost px-2 text-xl sm:px-4"
 							activeProps={{className: 'btn-active'}}
 						>
 							Forecast
+						</Link>
+
+						<Link
+							to="/notifications"
+							className="btn btn-ghost px-2 text-xl sm:px-4"
+							activeProps={{className: 'btn-active'}}
+						>
+							Notifications
 						</Link>
 					</div>
 

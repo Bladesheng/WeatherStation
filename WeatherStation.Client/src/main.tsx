@@ -5,6 +5,11 @@ import {routeTree} from './routeTree.gen';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {BProgress} from '@bprogress/core';
 
+window.addEventListener('load', async () => {
+	await navigator.serviceWorker.register('/sw.js');
+	console.log('[App] SW registered.');
+});
+
 const queryClient = new QueryClient();
 
 const router = createRouter({

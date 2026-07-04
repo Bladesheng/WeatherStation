@@ -10,7 +10,7 @@
 		"lint:fix": "oxlint --fix",
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.sw.json"
 	},
 	"packageManager": "pnpm@11.8.0+sha512.c1f5e7c4cb241c8f174b743851d82f42b802324afc8b0f116b96adb15aa06664948dde36960a3ba1079ba5b4b29dd0140135b94b5b5f5263592249d68e555f26",
 	"devDependencies": {
@@ -34,6 +34,7 @@
 		"@vitejs/plugin-react": "^6.0.3",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"daisyui": "^5.6.0",
+		"ofetch": "^1.5.1",
 		"oxfmt": "^0.56.0",
 		"oxlint": "^1.71.0",
 		"oxlint-tsgolint": "^0.23.0",

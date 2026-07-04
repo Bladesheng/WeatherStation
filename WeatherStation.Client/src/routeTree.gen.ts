@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NotificationsIndexRouteImport } from './routes/notifications.index'
 import { Route as HistoryIndexRouteImport } from './routes/history.index'
 import { Route as ForecastIndexRouteImport } from './routes/forecast.index'
 import { Route as HistoryYearMonthRouteImport } from './routes/history.$year.$month'
@@ -23,6 +24,11 @@ const HistoryRoute = HistoryRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsIndexRoute = NotificationsIndexRouteImport.update({
+  id: '/notifications/',
+  path: '/notifications/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryIndexRoute = HistoryIndexRouteImport.update({
@@ -46,12 +52,14 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRouteWithChildren
   '/forecast/': typeof ForecastIndexRoute
   '/history/': typeof HistoryIndexRoute
+  '/notifications/': typeof NotificationsIndexRoute
   '/history/$year/$month': typeof HistoryYearMonthRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forecast': typeof ForecastIndexRoute
   '/history': typeof HistoryIndexRoute
+  '/notifications': typeof NotificationsIndexRoute
   '/history/$year/$month': typeof HistoryYearMonthRoute
 }
 export interface FileRoutesById {
@@ -60,6 +68,7 @@ export interface FileRoutesById {
   '/history': typeof HistoryRouteWithChildren
   '/forecast/': typeof ForecastIndexRoute
   '/history/': typeof HistoryIndexRoute
+  '/notifications/': typeof NotificationsIndexRoute
   '/history/$year/$month': typeof HistoryYearMonthRoute
 }
 export interface FileRouteTypes {
@@ -69,15 +78,22 @@ export interface FileRouteTypes {
     | '/history'
     | '/forecast/'
     | '/history/'
+    | '/notifications/'
     | '/history/$year/$month'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forecast' | '/history' | '/history/$year/$month'
+  to:
+    | '/'
+    | '/forecast'
+    | '/history'
+    | '/notifications'
+    | '/history/$year/$month'
   id:
     | '__root__'
     | '/'
     | '/history'
     | '/forecast/'
     | '/history/'
+    | '/notifications/'
     | '/history/$year/$month'
   fileRoutesById: FileRoutesById
 }
@@ -85,6 +101,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HistoryRoute: typeof HistoryRouteWithChildren
   ForecastIndexRoute: typeof ForecastIndexRoute
+  NotificationsIndexRoute: typeof NotificationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -101,6 +118,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications/': {
+      id: '/notifications/'
+      path: '/notifications'
+      fullPath: '/notifications/'
+      preLoaderRoute: typeof NotificationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history/': {
@@ -144,6 +168,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HistoryRoute: HistoryRouteWithChildren,
   ForecastIndexRoute: ForecastIndexRoute,
+  NotificationsIndexRoute: NotificationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

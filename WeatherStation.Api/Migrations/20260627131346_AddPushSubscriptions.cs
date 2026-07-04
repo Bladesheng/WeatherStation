@@ -1,0 +1,40 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace WeatherStation.Api.Migrations
+{
+    /// <inheritdoc />
+    public partial class AddPushSubscriptions : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "PushSubscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Endpoint = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    P256Dh = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Auth = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    SendAt = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PushSubscriptions", x => x.Id);
+                });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "PushSubscriptions");
+        }
+    }
+}
