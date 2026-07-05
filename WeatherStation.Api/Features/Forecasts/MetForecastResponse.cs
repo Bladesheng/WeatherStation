@@ -50,12 +50,12 @@ public record InstantDetails(
 
 public record ForecastPeriod(
     [property: JsonPropertyName("summary")]
-    ForecastSummary Summary,
+    Summary Summary,
     [property: JsonPropertyName("details")]
     PeriodDetails Details
 );
 
-public record ForecastSummary(
+public record Summary(
     [property: JsonPropertyName("symbol_code")]
     string SymbolCode
 );

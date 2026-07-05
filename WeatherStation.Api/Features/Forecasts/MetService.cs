@@ -156,4 +156,33 @@ public class MetService(
             _semaphore.Release();
         }
     }
+
+    public async Task<ForecastSummary> GetForecastSummary()
+    {
+        var forecast = await GetForecastTimeseriesAsync();
+
+        var today = DateTimeOffset.Now.Date;
+        var forecastToday = forecast
+            .Where(f => f.Time.Date == today)
+            .ToList();
+
+        var tempMax = forecastToday.Max(f => f.Data.Instant.Details.AirTemperature);
+        var tempMin = forecastToday.Min(f => f.Data.Instant.Details.AirTemperature);
+
+        var precipitationTotal = forecastToday
+            .Sum(f => f.Data.Next1Hours?.Details.PrecipitationAmount ?? 0);
+
+        var body = $"Temperature: {tempMax:F0}˚ / {tempMin:F0}˚\n";
+        if (precipitationTotal > 0)
+            body += $"Precipitation: {precipitationTotal:0.#} mm";
+
+        var icon = forecastToday[0].Data.Next12Hours?.Summary.SymbolCode ??
+                   "heavysnowshowersandthunder_day";
+
+        return new ForecastSummary
+        {
+            Icon = icon,
+            Body = body
+        };
+    }
 }

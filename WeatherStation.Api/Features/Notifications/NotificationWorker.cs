@@ -4,13 +4,15 @@ using WebPush;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WeatherStation.Api.Data;
+ using WeatherStation.Api.Features.Forecasts;
 
 namespace WeatherStation.Api.Features.Notifications;
 
 public class NotificationWorker(
     IServiceScopeFactory scopeFactory,
     IOptions<NotificationsOptions> options,
-    ILogger<NotificationWorker> logger
+    ILogger<NotificationWorker> logger,
+    MetService metService
 ) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken ct)
@@ -47,19 +49,24 @@ public class NotificationWorker(
         var nowCetDate = nowCet.Date;
         var nowUtcDate = TimeZoneInfo.ConvertTimeToUtc(nowCetDate, cetZone);
 
-        var duesSubscriptions = await dbContext.PushSubscriptions
+        var dueSubscriptions = await dbContext.PushSubscriptions
             // Everything from midnight to now.
             .Where(s => s.SendAt <= nowCetTime)
             // But only those that have not been sent today yet.
             .Where(s => s.LastSentAt.Date < nowUtcDate)
             .ToListAsync(ct);
 
-        var tasks = duesSubscriptions.Select(SendOneAsync);
+        if (dueSubscriptions.Count == 0)
+            return;
 
-        await Task.WhenAll(tasks);
+        var forecastSummary = await metService.GetForecastSummary();
+
+        await Task.WhenAll(
+            dueSubscriptions.Select(s => SendOneAsync(s, forecastSummary))
+        );
     }
 
-    private async Task SendOneAsync(PushSubscription subscription)
+    private async Task SendOneAsync(PushSubscription subscription, ForecastSummary forecastSummary)
     {
         var webPushClient = new WebPushClient();
         var pushSubscription = new WebPush.PushSubscription(
@@ -83,8 +90,8 @@ public class NotificationWorker(
         var payload = JsonSerializer.Serialize(new
         {
             title = "Forecast",
-            icon = "todo",
-            body = "Forecast body todo"
+            icon = forecastSummary.Icon,
+            body = forecastSummary.Body
         });
 
         using var scope = scopeFactory.CreateScope();
