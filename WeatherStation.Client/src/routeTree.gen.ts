@@ -82,11 +82,7 @@ export interface FileRouteTypes {
     | '/history/$year/$month'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/forecast'
-    | '/history'
-    | '/notifications'
-    | '/history/$year/$month'
+    '/' | '/forecast' | '/history' | '/notifications' | '/history/$year/$month'
   id:
     | '__root__'
     | '/'
