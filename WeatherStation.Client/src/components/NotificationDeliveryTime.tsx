@@ -30,7 +30,9 @@ export function NotificationDeliveryTime({
 				onClick={() => deleteMutation.mutate(notification.id)}
 				disabled={isPending}
 			>
-				<span className={isPending ? 'loading loading-spinner' : 'icon-[heroicons--trash]'}></span>
+				<span
+					className={isPending ? 'loading loading-spinner' : 'icon-[material-symbols--delete]'}
+				></span>
 			</button>
 		</li>
 	);

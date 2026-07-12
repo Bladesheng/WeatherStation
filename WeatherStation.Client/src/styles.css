@@ -6,18 +6,28 @@
 
 @plugin 'daisyui' {
 	themes:
-		light --default,
-		night --prefersdark;
+		nord --default,
+		business --prefersdark;
 }
 
 @plugin 'daisyui/theme' {
-	name: 'light';
-	--color-primary: oklch(0.65351 0.138 232.661);
+	name: 'nord';
+
+	--radius-selector: 1rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
 }
 
 @plugin 'daisyui/theme' {
-	name: 'night';
-	--radius-selector: 0.5rem;
+	name: 'business';
+
+	--radius-selector: 1rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
 }
 
 @custom-variant dark (&:where([data-theme=night], [data-theme=night] *));

@@ -1,4 +1,5 @@
 import {Link} from '@tanstack/react-router';
+import {ThemeSelect} from '@/components/ThemeSelect.tsx';
 
 export function Header() {
 	return (
@@ -45,8 +46,7 @@ export function Header() {
 					</div>
 
 					<div className="flex justify-end gap-1 sm:gap-2">
-						{/**/}
-						{/*<ThemeToggle />*/}
+						<ThemeSelect />
 					</div>
 				</nav>
 			</header>
