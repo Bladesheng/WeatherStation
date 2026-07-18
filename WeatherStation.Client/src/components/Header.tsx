@@ -19,39 +19,35 @@ export function Header() {
 						<span className="hidden sm:inline">WS2</span>
 					</div>
 
-					<div className="flex justify-center gap-1 sm:gap-2">
-						<Link
-							to="/"
-							className="btn btn-ghost px-2 text-xl sm:px-4"
-							activeProps={{className: 'btn-active'}}
-						>
-							Dashboard
-						</Link>
+					<ul className="menu menu-horizontal gap-1">
+						<li>
+							<Link to="/" className="text-xl" activeProps={{className: 'menu-active'}}>
+								Dashboard
+							</Link>
+						</li>
 
-						<Link
-							to="/history"
-							className="btn btn-ghost px-2 text-xl sm:px-4"
-							activeProps={{className: 'btn-active'}}
-						>
-							History
-						</Link>
+						<li>
+							<Link to="/history" className="text-xl" activeProps={{className: 'menu-active'}}>
+								History
+							</Link>
+						</li>
 
-						<Link
-							to="/forecast"
-							className="btn btn-ghost px-2 text-xl sm:px-4"
-							activeProps={{className: 'btn-active'}}
-						>
-							Forecast
-						</Link>
+						<li>
+							<Link to="/forecast" className="text-xl" activeProps={{className: 'menu-active'}}>
+								Forecast
+							</Link>
+						</li>
 
-						<Link
-							to="/notifications"
-							className="btn btn-ghost px-2 text-xl sm:px-4"
-							activeProps={{className: 'btn-active'}}
-						>
-							Notifications
-						</Link>
-					</div>
+						<li>
+							<Link
+								to="/notifications"
+								className="text-xl"
+								activeProps={{className: 'menu-active'}}
+							>
+								Notifications
+							</Link>
+						</li>
+					</ul>
 
 					<div className="flex justify-end gap-1 sm:gap-2">
 						<ThemeSelect />
