@@ -1,57 +1,13 @@
-import {useEffect, useState} from 'react';
+import {type IPreferredTheme, useTheme} from '@/components/ThemeContext.tsx';
 
-const THEME_KEY = 'theme';
-
-type ITheme = 'light' | 'dark' | 'auto';
-
-const themes: Record<ITheme, string> = {
+const themeIcons: Record<IPreferredTheme, string> = {
 	light: 'light-mode',
 	dark: 'dark-mode',
 	auto: 'contrast',
 } as const;
 
-function changeTheme(newTheme: 'light' | 'dark') {
-	document.documentElement.setAttribute('data-theme', newTheme === 'light' ? 'nord' : 'business');
-}
-
 export function ThemeSelect() {
-	const [theme, setTheme] = useState<ITheme>(
-		(localStorage.getItem(THEME_KEY) as ITheme | null) ?? 'auto'
-	);
-
-	useEffect(() => {
-		localStorage.setItem(THEME_KEY, theme);
-
-		if (theme === 'light') {
-			changeTheme('light');
-		} else if (theme === 'dark') {
-			changeTheme('dark');
-		} else if (theme === 'auto') {
-			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				changeTheme('dark');
-			} else {
-				changeTheme('light');
-			}
-		}
-	}, [theme]);
-
-	useEffect(() => {
-		if (theme !== 'auto') {
-			return;
-		}
-
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-		mediaQuery.addEventListener('change', handleColorSchemeChange);
-
-		function handleColorSchemeChange(event: MediaQueryListEvent) {
-			changeTheme(event.matches ? 'dark' : 'light');
-		}
-
-		return () => {
-			mediaQuery.removeEventListener('change', handleColorSchemeChange);
-		};
-	}, [theme]);
+	const {preferredTheme, setPreferredTheme} = useTheme();
 
 	return (
 		<>
@@ -60,7 +16,7 @@ export function ThemeSelect() {
 				popoverTarget="popover-theme"
 				style={{anchorName: '--anchor-theme'}}
 			>
-				<span className={`icon-[material-symbols--${themes[theme]}]`} />
+				<span className={`icon-[material-symbols--${themeIcons[preferredTheme]}]`} />
 			</button>
 
 			<ul
@@ -69,15 +25,25 @@ export function ThemeSelect() {
 				id="popover-theme"
 				style={{positionAnchor: '--anchor-theme'}}
 			>
-				{Object.entries(themes).map(([name, icon]) => (
-					<li key={name} className={theme === name ? 'menu-active' : ''}>
-						<button className="capitalize" onClick={() => setTheme(name as ITheme)}>
+				{Object.entries(themeIcons).map(([name, icon]) => (
+					<li key={name} className={preferredTheme === name ? 'menu-active' : ''}>
+						<button
+							className="capitalize"
+							onClick={() => setPreferredTheme(name as IPreferredTheme)}
+						>
 							<span className={`icon-[material-symbols--${icon}]`} />
 							{name}
 						</button>
 					</li>
 				))}
 			</ul>
+
+			{/* Tailwind icons don't know which icons are gonna be used in advance. */}
+			<template>
+				<span className={`icon-[material-symbols--light-mode]`} />
+				<span className={`icon-[material-symbols--dark-mode]`} />
+				<span className={`icon-[material-symbols--contrast]`} />
+			</template>
 		</>
 	);
 }

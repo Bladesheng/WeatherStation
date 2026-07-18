@@ -23,6 +23,8 @@
 @plugin 'daisyui/theme' {
 	name: 'business';
 
+	--color-primary: #06aba7;
+
 	--radius-selector: 1rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
@@ -30,7 +32,7 @@
 	--size-field: 0.25rem;
 }
 
-@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
+@custom-variant dark (&:where([data-theme=business], [data-theme=business] *));
 
 :root {
 	--bprogress-color: var(--color-primary);
