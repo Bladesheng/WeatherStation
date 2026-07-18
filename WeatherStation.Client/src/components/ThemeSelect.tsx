@@ -1,9 +1,9 @@
 import {type IPreferredTheme, useTheme} from '@/components/ThemeContext.tsx';
 
 const themeIcons: Record<IPreferredTheme, string> = {
-	light: 'light-mode',
-	dark: 'dark-mode',
-	auto: 'contrast',
+	light: 'icon-[material-symbols--light-mode]',
+	dark: 'icon-[material-symbols--dark-mode]',
+	auto: 'icon-[material-symbols--contrast]',
 } as const;
 
 export function ThemeSelect() {
@@ -16,7 +16,7 @@ export function ThemeSelect() {
 				popoverTarget="popover-theme"
 				style={{anchorName: '--anchor-theme'}}
 			>
-				<span className={`icon-[material-symbols--${themeIcons[preferredTheme]}]`} />
+				<span className={themeIcons[preferredTheme]} />
 			</button>
 
 			<ul
@@ -31,19 +31,12 @@ export function ThemeSelect() {
 							className="capitalize"
 							onClick={() => setPreferredTheme(name as IPreferredTheme)}
 						>
-							<span className={`icon-[material-symbols--${icon}]`} />
+							<span className={icon} />
 							{name}
 						</button>
 					</li>
 				))}
 			</ul>
-
-			{/* Tailwind icons don't know which icons are gonna be used in advance. */}
-			<template>
-				<span className={`icon-[material-symbols--light-mode]`} />
-				<span className={`icon-[material-symbols--dark-mode]`} />
-				<span className={`icon-[material-symbols--contrast]`} />
-			</template>
 		</>
 	);
 }
