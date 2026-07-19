@@ -19,7 +19,7 @@ function HistoryMonth() {
 			{year}/{month}
 			{readingsQuery.data.map((reading) => (
 				<div key={reading.id}>
-					<div>{reading.createdAt}</div>
+					<div>{reading.createdAt.toString()}</div>
 					<div>{reading.temperatureBmp}</div>
 				</div>
 			))}

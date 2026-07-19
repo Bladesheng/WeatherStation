@@ -9,26 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HistoryRouteImport } from './routes/history'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as NotificationsIndexRouteImport } from './routes/notifications.index'
-import { Route as HistoryIndexRouteImport } from './routes/history.index'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ForecastIndexRouteImport } from './routes/forecast.index'
+import { Route as HistoryIndexRouteImport } from './routes/history.index'
+import { Route as NotificationsIndexRouteImport } from './routes/notifications.index'
 import { Route as HistoryYearMonthRouteImport } from './routes/history.$year.$month'
 
-const HistoryRoute = HistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NotificationsIndexRoute = NotificationsIndexRouteImport.update({
-  id: '/notifications/',
-  path: '/notifications/',
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForecastIndexRoute = ForecastIndexRouteImport.update({
+  id: '/forecast/',
+  path: '/forecast/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryIndexRoute = HistoryIndexRouteImport.update({
@@ -36,9 +36,9 @@ const HistoryIndexRoute = HistoryIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HistoryRoute,
 } as any)
-const ForecastIndexRoute = ForecastIndexRouteImport.update({
-  id: '/forecast/',
-  path: '/forecast/',
+const NotificationsIndexRoute = NotificationsIndexRouteImport.update({
+  id: '/notifications/',
+  path: '/notifications/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryYearMonthRoute = HistoryYearMonthRouteImport.update({
@@ -102,13 +102,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/history': {
-      id: '/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof HistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -116,11 +109,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/notifications/': {
-      id: '/notifications/'
-      path: '/notifications'
-      fullPath: '/notifications/'
-      preLoaderRoute: typeof NotificationsIndexRouteImport
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forecast/': {
+      id: '/forecast/'
+      path: '/forecast'
+      fullPath: '/forecast/'
+      preLoaderRoute: typeof ForecastIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history/': {
@@ -130,11 +130,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryIndexRouteImport
       parentRoute: typeof HistoryRoute
     }
-    '/forecast/': {
-      id: '/forecast/'
-      path: '/forecast'
-      fullPath: '/forecast/'
-      preLoaderRoute: typeof ForecastIndexRouteImport
+    '/notifications/': {
+      id: '/notifications/'
+      path: '/notifications'
+      fullPath: '/notifications/'
+      preLoaderRoute: typeof NotificationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history/$year/$month': {
