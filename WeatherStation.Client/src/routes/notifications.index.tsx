@@ -5,8 +5,8 @@ import {
 	allSubscriptionsQueryOptions,
 	createPushSubscriptionMutationOptions,
 } from '@/utils/queries.ts';
-import {NotificationDeliveryTime} from '@/components/NotificationDeliveryTime.tsx';
 import {useState} from 'react';
+import {NotificationDeliveryTime} from '@/components/notifications/NotificationDeliveryTime.tsx';
 
 export const Route = createFileRoute('/notifications/')({
 	component: Notifications,

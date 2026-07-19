@@ -1,6 +1,6 @@
 import {Link} from '@tanstack/react-router';
-import {ThemeSelect} from '@/components/ThemeSelect.tsx';
-import {useTheme} from '@/components/ThemeContext.tsx';
+import {useTheme} from '@/contexts/ThemeContext.tsx';
+import {ThemeSelect} from '@/components/header/ThemeSelect.tsx';
 
 export const MOBILE_DRAWER_ID = 'mobile-drawer';
 

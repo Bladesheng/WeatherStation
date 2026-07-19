@@ -4,7 +4,7 @@ import {createRouter, RouterProvider} from '@tanstack/react-router';
 import {routeTree} from './routeTree.gen';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {BProgress} from '@bprogress/core';
-import {ThemeProvider} from '@/components/ThemeContext.tsx';
+import {ThemeProvider} from '@/contexts/ThemeContext.tsx';
 
 window.addEventListener('load', async () => {
 	await navigator.serviceWorker.register('/sw.js');

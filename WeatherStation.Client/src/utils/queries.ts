@@ -12,6 +12,7 @@ const api = ofetch.create({
 export function readings24QueryOptions() {
 	return queryOptions({
 		queryKey: ['readings24'],
+		refetchInterval: 1000 * 30,
 		queryFn: async () => {
 			const res = await api<IReading[]>('/api/readings/24h');
 			return res;

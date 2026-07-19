@@ -1,4 +1,4 @@
-import {type IPreferredTheme, useTheme} from '@/components/ThemeContext.tsx';
+import {type IPreferredTheme, useTheme} from '@/contexts/ThemeContext.tsx';
 
 const themeIcons: Record<IPreferredTheme, string> = {
 	light: 'icon-[material-symbols--light-mode]',

@@ -4,8 +4,8 @@ import {TanStackRouterDevtoolsPanel} from '@tanstack/react-router-devtools';
 import {TanStackDevtools} from '@tanstack/react-devtools';
 import {ReactQueryDevtoolsPanel} from '@tanstack/react-query-devtools';
 import type {QueryClient} from '@tanstack/react-query';
-import {Header, navLinks, MOBILE_DRAWER_ID} from '@/components/Header.tsx';
 import {Link} from '@tanstack/react-router';
+import {Header, MOBILE_DRAWER_ID, navLinks} from '@/components/header/Header.tsx';
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
