@@ -15,7 +15,11 @@ export function readings24QueryOptions() {
 		refetchInterval: 1000 * 30,
 		queryFn: async () => {
 			const res = await api<IReading[]>('/api/readings/24h');
-			return res;
+
+			return res.map((reading) => ({
+				...reading,
+				createdAt: new Date(reading.createdAt),
+			}));
 		},
 	});
 }
