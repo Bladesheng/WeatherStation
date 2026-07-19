@@ -1,4 +1,5 @@
 import {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
+import {registerEchartsTheme} from '@/utils/echartsTheme.ts';
 
 const THEME_KEY = 'theme';
 
@@ -31,6 +32,8 @@ export function ThemeProvider({children}: {children: ReactNode}) {
 			'data-theme',
 			calculatedTheme === 'light' ? 'nord' : 'business'
 		);
+
+		registerEchartsTheme(calculatedTheme);
 	}, [calculatedTheme]);
 
 	useEffect(() => {

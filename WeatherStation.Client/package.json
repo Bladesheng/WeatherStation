@@ -34,6 +34,8 @@
 		"@vitejs/plugin-react": "^6.0.3",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"daisyui": "^5.6.13",
+		"echarts": "^6.1.0",
+		"echarts-for-react": "^3.0.6",
 		"ofetch": "^1.5.1",
 		"oxfmt": "^0.57.0",
 		"oxlint": "^1.72.0",
