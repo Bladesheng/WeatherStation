@@ -4,17 +4,18 @@ import type {IForecastResponse} from '@/types/forecastResponse.ts';
 import type {IReading} from '@/types/reading.ts';
 import type {INotificationDeliveryTime} from '@/types/notificationDeliveryTime.ts';
 import {urlBase64ToUint8Array} from '@/utils/utils.ts';
+import type {IReadingsResponse} from '@/types/readingsResponse.ts';
 
 const api = ofetch.create({
 	baseURL: import.meta.env.DEV ? 'http://localhost:5087' : 'https://weather-api.bladesheng.com',
 });
 
 export function readings24QueryOptions() {
-	return queryOptions({
+	return queryOptions<IReading[]>({
 		queryKey: ['readings24'],
 		refetchInterval: 1000 * 30,
 		queryFn: async () => {
-			const res = await api<IReading[]>('/api/readings/24h');
+			const res = await api<IReadingsResponse>('/api/readings/24h');
 
 			return res.map((reading) => ({
 				...reading,
@@ -25,11 +26,15 @@ export function readings24QueryOptions() {
 }
 
 export function readingsMonthQueryOptions(year: string, month: string) {
-	return queryOptions({
+	return queryOptions<IReading[]>({
 		queryKey: ['readingsMonth', year, month],
 		queryFn: async () => {
-			const res = await api<IReading[]>(`/api/readings/month/${year}/${month}`);
-			return res;
+			const res = await api<IReadingsResponse>(`/api/readings/month/${year}/${month}`);
+
+			return res.map((reading) => ({
+				...reading,
+				createdAt: new Date(reading.createdAt),
+			}));
 		},
 	});
 }

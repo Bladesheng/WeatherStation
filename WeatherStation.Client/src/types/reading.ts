@@ -4,5 +4,5 @@ export type IReading = {
 	temperatureDht: number;
 	pressureBmp: number;
 	humidityDht: number;
-	createdAt: string;
+	createdAt: Date;
 };
