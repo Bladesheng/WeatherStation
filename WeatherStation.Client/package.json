@@ -42,6 +42,7 @@
 		"oxlint-tsgolint": "^0.24.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
+		"rollup-plugin-visualizer": "^7.0.1",
 		"tailwindcss": "^4.3.2",
 		"temporal-polyfill": "^1.0.1",
 		"typescript": "7.0.1-rc",
