@@ -24,19 +24,19 @@ export function registerEchartsTheme(themeName: ITheme) {
 			textStyle: {color: baseContent},
 		},
 		categoryAxis: {
-			axisLine: {lineStyle: {color: base300}},
+			axisLine: {lineStyle: {color: `${baseContent}1a`}},
 			axisLabel: {color: baseContent},
-			splitLine: {lineStyle: {color: base200}},
+			splitLine: {lineStyle: {color: `${baseContent}1a`}},
 		},
 		valueAxis: {
-			axisLine: {lineStyle: {color: base300}},
+			axisLine: {lineStyle: {color: `${baseContent}1a`}},
 			axisLabel: {color: baseContent},
-			splitLine: {lineStyle: {color: base200}},
+			splitLine: {lineStyle: {color: `${baseContent}1a`}},
 		},
 		timeAxis: {
-			axisLine: {lineStyle: {color: base300}},
+			axisLine: {lineStyle: {color: `${baseContent}1a`}},
 			axisLabel: {color: baseContent},
-			splitLine: {lineStyle: {color: base200}},
+			splitLine: {lineStyle: {color: `${baseContent}1a`}},
 		},
 		dataZoom: {
 			textStyle: {color: baseContent},
@@ -45,11 +45,22 @@ export function registerEchartsTheme(themeName: ITheme) {
 			handleStyle: {
 				color: primary,
 			},
+			moveHandleStyle: {
+				color: primary,
+			},
 		},
 	};
 
 	registerTheme(themeName, options);
 }
+
+export const chartColors = {
+	temperature: cssColorVariableToHex('--color-rose-500'),
+	temperatureBmp: cssColorVariableToHex('--color-yellow-500'),
+	temperatureDht: cssColorVariableToHex('--color-orange-500'),
+	humidity: cssColorVariableToHex('--color-blue-400'),
+	pressure: cssColorVariableToHex('--color-purple-400'),
+};
 
 function cssColorVariableToHex(cssColorName: string): string {
 	const cssColor = getComputedStyle(document.documentElement).getPropertyValue(cssColorName).trim();

@@ -19,6 +19,7 @@ export function readings24QueryOptions() {
 
 			return res.map((reading) => ({
 				...reading,
+				temperatureAvg: (reading.temperatureBmp + reading.temperatureDht) / 2,
 				createdAt: new Date(reading.createdAt),
 			}));
 		},
@@ -33,6 +34,7 @@ export function readingsMonthQueryOptions(year: string, month: string) {
 
 			return res.map((reading) => ({
 				...reading,
+				temperatureAvg: (reading.temperatureBmp + reading.temperatureDht) / 2,
 				createdAt: new Date(reading.createdAt),
 			}));
 		},
