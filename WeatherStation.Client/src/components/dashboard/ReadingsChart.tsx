@@ -175,7 +175,7 @@ export function ReadingsChart({readings}: {readings: IReading[]}) {
 	};
 
 	return (
-		<div className="flex flex-1 flex-col rounded bg-base-200 p-2">
+		<div className="flex flex-1 flex-col rounded border border-base-content/10 bg-base-200 p-2">
 			<ReactECharts
 				theme={theme}
 				option={option}

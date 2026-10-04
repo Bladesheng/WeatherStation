@@ -12,7 +12,7 @@ export function StatCard({
 	icon: string;
 }) {
 	return (
-		<div className="flex grow items-center justify-between gap-4 rounded bg-base-200 p-2">
+		<div className="flex grow items-center justify-between gap-4 rounded border border-base-content/10 bg-base-200 p-2">
 			<div className="flex flex-col">
 				<div className="text-xs">{title}</div>
 

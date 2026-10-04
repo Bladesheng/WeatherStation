@@ -15,7 +15,7 @@ export function Header() {
 	const {theme} = useTheme();
 
 	return (
-		<header className="shadow">
+		<header className="border-b border-base-content/10 bg-base-200">
 			<nav className="navbar grid grid-cols-3">
 				<label
 					htmlFor={MOBILE_DRAWER_ID}
