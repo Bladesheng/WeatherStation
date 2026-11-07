@@ -37,3 +37,8 @@
 :root {
 	--bprogress-color: var(--color-primary);
 }
+
+/* the same faint border as the cards, set through daisyUI's variable so the button hover still works */
+@utility btn-bordered {
+	--btn-border: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+}

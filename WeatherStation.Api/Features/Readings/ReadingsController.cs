@@ -40,7 +40,12 @@ public class ReadingsController(
     [HttpGet("month/{year:int}/{month:int}")]
     public async Task<ActionResult<IEnumerable<Reading>>> GetMonth(int year, int month)
     {
-        var isCurrentMonth = year == DateTime.UtcNow.Year && month == DateTime.UtcNow.Month;
+        // Months follow the station's local time, otherwise a UTC month leaks
+        // the first hours of the next local month (and misses its own first hours).
+        var cetZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Prague");
+        var nowCet = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, cetZone);
+
+        var isCurrentMonth = year == nowCet.Year && month == nowCet.Month;
 
         Response.Headers.CacheControl = isCurrentMonth
             ? "public, max-age=300"
@@ -50,8 +55,9 @@ public class ReadingsController(
         if (cache.TryGetValue(cacheKey, out List<Reading>? cached) && cached != null) return cached;
 
 
-        var start = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Utc);
-        var end = start.AddMonths(1);
+        var startCet = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+        var start = TimeZoneInfo.ConvertTimeToUtc(startCet, cetZone);
+        var end = TimeZoneInfo.ConvertTimeToUtc(startCet.AddMonths(1), cetZone);
 
         var readings = await dbContext.Readings
             .Where(r => r.CreatedAt >= start && r.CreatedAt < end)

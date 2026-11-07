@@ -28,7 +28,20 @@ function formatTooltipValue(unit: string) {
 	return (value: unknown) => `${Number(value).toFixed(1)} ${unit}`;
 }
 
-export function ReadingsChart({readings}: {readings: IReading[]}) {
+const xAxisScales = {
+	// a tick every hour, no matter the zoom
+	hours: {minInterval: 60 * 60 * 1000, maxInterval: 60 * 60 * 1000, formatter: '{HH}:{mm}'},
+	// at most a tick per day
+	days: {minInterval: 24 * 60 * 60 * 1000, maxInterval: undefined, formatter: '{MMM} {d}'},
+};
+
+export function ReadingsChart({
+	readings,
+	xAxisScale,
+}: {
+	readings: IReading[];
+	xAxisScale: keyof typeof xAxisScales;
+}) {
 	const {theme} = useTheme();
 	// kept in state because every data refresh re-applies the whole option, which would reset the legend toggles
 	const [selectedSeries, setSelectedSeries] = useState<Record<string, boolean>>({
@@ -62,11 +75,10 @@ export function ReadingsChart({readings}: {readings: IReading[]}) {
 			},
 			xAxis: {
 				type: 'time',
-				// a tick every hour, no matter the zoom
-				minInterval: 60 * 60 * 1000,
-				maxInterval: 60 * 60 * 1000,
+				minInterval: xAxisScales[xAxisScale].minInterval,
+				maxInterval: xAxisScales[xAxisScale].maxInterval,
 				axisLabel: {
-					formatter: '{HH}:{mm}',
+					formatter: xAxisScales[xAxisScale].formatter,
 					// on narrow screens skip labels that would overlap instead of drawing them on top of each other
 					hideOverlap: true,
 				},

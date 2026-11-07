@@ -43,7 +43,7 @@ function formatDelta(delta: number, fractionDigits: number): string {
 	}
 }
 
-export function Stats({readings}: {readings: IReading[]}) {
+export function CurrentStats({readings}: {readings: IReading[]}) {
 	const [now, setNow] = useState(Date.now());
 	useEffect(() => {
 		const interval = setInterval(() => setNow(Date.now()), 10 * 1000);

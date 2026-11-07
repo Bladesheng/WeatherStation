@@ -2,7 +2,7 @@ import {createFileRoute} from '@tanstack/react-router';
 import {pageTitle} from '@/utils/utils.ts';
 import {readings24QueryOptions} from '@/utils/queries.ts';
 import {useSuspenseQuery} from '@tanstack/react-query';
-import {Stats} from '@/components/dashboard/Stats.tsx';
+import {CurrentStats} from '@/components/dashboard/CurrentStats.tsx';
 import {ReadingsChart} from '@/components/dashboard/ReadingsChart.tsx';
 
 export const Route = createFileRoute('/')({
@@ -21,9 +21,9 @@ export function Index() {
 	return (
 		<>
 			<main className="m-4 flex flex-1 flex-col gap-2">
-				<Stats readings={readingsQuery.data} />
+				<CurrentStats readings={readingsQuery.data} />
 
-				<ReadingsChart readings={readingsQuery.data} />
+				<ReadingsChart readings={readingsQuery.data} xAxisScale="hours" />
 			</main>
 		</>
 	);
