@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import type {IReading} from '@/types/reading.ts';
 import {StatCard} from '@/components/dashboard/StatCard.tsx';
+import {type IDateLocale, useDateLocale} from '@/contexts/DateLocaleContext.tsx';
 
 function pad(n: number): string {
 	return n.toString().padStart(2, '0');
@@ -10,14 +11,14 @@ function formatTime(date: Date): string {
 	return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-function formatDate(date: Date): string {
-	const day = date.toLocaleDateString(undefined, {month: 'short', day: 'numeric'});
+function formatDate(date: Date, locale: IDateLocale): string {
+	const day = date.toLocaleDateString(locale, {month: 'short', day: 'numeric'});
 
 	return `${formatTime(date)} · ${day}`;
 }
 
-function formatTimeAgo(date: Date, now: number): string {
-	const formatter = new Intl.RelativeTimeFormat(undefined, {numeric: 'always'});
+function formatTimeAgo(date: Date, now: number, locale: IDateLocale): string {
+	const formatter = new Intl.RelativeTimeFormat(locale, {numeric: 'always'});
 
 	const minutes = Math.round((date.getTime() - now) / (60 * 1000));
 	if (Math.abs(minutes) < 60) {
@@ -44,6 +45,7 @@ function formatDelta(delta: number, fractionDigits: number): string {
 }
 
 export function CurrentStats({readings}: {readings: IReading[]}) {
+	const {dateLocale} = useDateLocale();
 	const [now, setNow] = useState(Date.now());
 	useEffect(() => {
 		const interval = setInterval(() => setNow(Date.now()), 10 * 1000);
@@ -84,8 +86,8 @@ export function CurrentStats({readings}: {readings: IReading[]}) {
 		reading.temperatureAvg > max.temperatureAvg ? reading : max
 	);
 
-	const lastUpdate = formatDate(readings.at(-1)!.createdAt);
-	const lastUpdateAgo = formatTimeAgo(readings.at(-1)!.createdAt, now);
+	const lastUpdate = formatDate(readings.at(-1)!.createdAt, dateLocale);
+	const lastUpdateAgo = formatTimeAgo(readings.at(-1)!.createdAt, now, dateLocale);
 	const isOnline = now - readings.at(-1)!.createdAt.getTime() < 6 * 60 * 1000;
 
 	return (

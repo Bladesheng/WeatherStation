@@ -5,6 +5,7 @@ import {routeTree} from './routeTree.gen';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {BProgress} from '@bprogress/core';
 import {ThemeProvider} from '@/contexts/ThemeContext.tsx';
+import {DateLocaleProvider} from '@/contexts/DateLocaleContext.tsx';
 
 window.addEventListener('load', async () => {
 	await navigator.serviceWorker.register('/sw.js');
@@ -61,7 +62,9 @@ if (!rootElement.innerHTML) {
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
 				<ThemeProvider>
-					<RouterProvider router={router} />
+					<DateLocaleProvider>
+						<RouterProvider router={router} />
+					</DateLocaleProvider>
 				</ThemeProvider>
 			</QueryClientProvider>
 		</StrictMode>

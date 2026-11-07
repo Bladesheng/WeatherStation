@@ -1,6 +1,7 @@
 import ReactECharts from 'echarts-for-react';
 import type {EChartsOption} from 'echarts';
 import {useTheme} from '@/contexts/ThemeContext.tsx';
+import {useDateLocale} from '@/contexts/DateLocaleContext.tsx';
 import {chartColors} from '@/utils/echartsTheme.ts';
 import {roundDown, roundUp} from '@/utils/utils.ts';
 import {DAY, HOUR, formatHour, type IForecastDay, type IForecastPoint} from '@/utils/forecast.ts';
@@ -17,6 +18,7 @@ export function ForecastChart({
 	selectedDay: IForecastDay;
 }) {
 	const {theme} = useTheme();
+	const {dateLocale} = useDateLocale();
 
 	const lastPoint = points.at(-1)!;
 	const start = points[0].time.getTime();
@@ -47,7 +49,10 @@ export function ForecastChart({
 			minInterval: DAY,
 			maxInterval: DAY,
 			axisLabel: {
-				formatter: '{ee} {d}',
+				formatter: (value: number) => {
+					const date = new Date(value);
+					return `${date.toLocaleDateString(dateLocale, {weekday: 'short'})} ${date.getDate()}`;
+				},
 				hideOverlap: true,
 			},
 			splitLine: {show: true},
@@ -56,7 +61,7 @@ export function ForecastChart({
 					// sets the tooltip header
 					formatter: ({value}) => {
 						const date = new Date(value);
-						return `${date.toLocaleDateString('en', {weekday: 'short'})} ${date.getDate()}, ${formatHour(date)}`;
+						return `${date.toLocaleDateString(dateLocale, {weekday: 'short'})} ${date.getDate()}, ${formatHour(date)}`;
 					},
 				},
 			},

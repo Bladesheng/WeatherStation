@@ -4,6 +4,8 @@ import {
 	weatherIconUrl,
 	type IForecastDay,
 } from '@/utils/forecast.ts';
+import {useDateLocale} from '@/contexts/DateLocaleContext.tsx';
+import {capitalize} from '@/utils/utils.ts';
 
 export function ForecastDayCards({
 	days,
@@ -14,6 +16,8 @@ export function ForecastDayCards({
 	selectedDay: number;
 	onSelectDay: (index: number) => void;
 }) {
+	const {dateLocale} = useDateLocale();
+
 	return (
 		<div className="grid auto-cols-[1fr] grid-flow-col gap-2 overflow-x-auto">
 			{days.map((day, i) => (
@@ -24,11 +28,12 @@ export function ForecastDayCards({
 					className={`flex min-w-23 cursor-pointer flex-col items-center gap-1 rounded border px-1.5 py-2.5 hover:border-primary ${i === selectedDay ? 'border-primary bg-primary/10' : 'border-base-content/10 bg-base-200'}`}
 				>
 					<span className="text-sm font-semibold">
-						{relativeDayName(day.date) ?? day.date.toLocaleDateString('en', {weekday: 'long'})}
+						{relativeDayName(day.date, dateLocale) ??
+							capitalize(day.date.toLocaleDateString(dateLocale, {weekday: 'long'}))}
 					</span>
 
 					<span className="text-xs opacity-70">
-						{day.date.toLocaleDateString('en', {month: 'short', day: 'numeric'})}
+						{day.date.toLocaleDateString(dateLocale, {month: 'short', day: 'numeric'})}
 					</span>
 
 					<img src={weatherIconUrl(day.symbol)} alt="" className="size-8" />

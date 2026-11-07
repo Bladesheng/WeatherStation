@@ -2,7 +2,8 @@ import {Link, createFileRoute} from '@tanstack/react-router';
 import {readingsMonthQueryOptions} from '@/utils/queries.ts';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {Temporal} from 'temporal-polyfill';
-import {pageTitle} from '@/utils/utils.ts';
+import {capitalize, pageTitle} from '@/utils/utils.ts';
+import {useDateLocale} from '@/contexts/DateLocaleContext.tsx';
 import {isHistoryMonth} from '@/utils/history.ts';
 import {MonthStats} from '@/components/history/MonthStats.tsx';
 import {ReadingsChart} from '@/components/dashboard/ReadingsChart.tsx';
@@ -46,6 +47,7 @@ function MonthLink({
 }
 
 function HistoryMonth() {
+	const {dateLocale} = useDateLocale();
 	const {year, month} = Route.useParams();
 	const yearMonth = new Temporal.PlainYearMonth(Number(year), Number(month));
 
@@ -63,7 +65,12 @@ function HistoryMonth() {
 				</div>
 
 				<h1 className="text-xl font-semibold">
-					{yearMonth.toLocaleString('en', {month: 'long', year: 'numeric', calendar: 'iso8601'})}
+					{capitalize(
+						// the iso8601 calendar gives "2026 listopadu" in Czech, the default gregorian one "listopad 2026"
+						yearMonth
+							.toPlainDate({day: 1})
+							.toLocaleString(dateLocale, {month: 'long', year: 'numeric'})
+					)}
 				</h1>
 
 				<span className="text-sm opacity-70">

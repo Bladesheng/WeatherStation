@@ -1,6 +1,7 @@
 import {Link} from '@tanstack/react-router';
 import {useTheme} from '@/contexts/ThemeContext.tsx';
 import {ThemeSelect} from '@/components/header/ThemeSelect.tsx';
+import {DateLocaleToggle} from '@/components/header/DateLocaleToggle.tsx';
 
 export const MOBILE_DRAWER_ID = 'mobile-drawer';
 
@@ -46,6 +47,7 @@ export function Header() {
 				</ul>
 
 				<div className="flex justify-end gap-1 sm:gap-2">
+					<DateLocaleToggle />
 					<ThemeSelect />
 				</div>
 			</nav>

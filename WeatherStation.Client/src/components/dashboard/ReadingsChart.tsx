@@ -5,9 +5,10 @@ import type {EChartsOption} from 'echarts';
 import {chartColors} from '@/utils/echartsTheme.ts';
 import {useState} from 'react';
 import {roundDown, roundUp} from '@/utils/utils.ts';
+import {type IDateLocale, useDateLocale} from '@/contexts/DateLocaleContext.tsx';
 
-function formatDateTime(value: number | string | Date) {
-	return new Date(value).toLocaleString(undefined, {
+function formatDateTime(value: number | string | Date, locale: IDateLocale) {
+	return new Date(value).toLocaleString(locale, {
 		year: 'numeric',
 		month: 'numeric',
 		day: 'numeric',
@@ -22,9 +23,18 @@ function formatTooltipValue(unit: string) {
 
 const xAxisScales = {
 	// a tick every hour, no matter the zoom
-	hours: {minInterval: 60 * 60 * 1000, maxInterval: 60 * 60 * 1000, formatter: '{HH}:{mm}'},
+	hours: {
+		minInterval: 60 * 60 * 1000,
+		maxInterval: 60 * 60 * 1000,
+		formatter: () => '{HH}:{mm}',
+	},
 	// at most a tick per day
-	days: {minInterval: 24 * 60 * 60 * 1000, maxInterval: undefined, formatter: '{MMM} {d}'},
+	days: {
+		minInterval: 24 * 60 * 60 * 1000,
+		maxInterval: undefined,
+		formatter: (locale: IDateLocale) => (value: number) =>
+			new Date(value).toLocaleDateString(locale, {month: 'short', day: 'numeric'}),
+	},
 };
 
 export function ReadingsChart({
@@ -35,6 +45,7 @@ export function ReadingsChart({
 	xAxisScale: keyof typeof xAxisScales;
 }) {
 	const {theme} = useTheme();
+	const {dateLocale} = useDateLocale();
 	// kept in state because every data refresh re-applies the whole option, which would reset the legend toggles
 	const [selectedSeries, setSelectedSeries] = useState<Record<string, boolean>>({
 		'Temperature (avg)': true,
@@ -70,7 +81,7 @@ export function ReadingsChart({
 				minInterval: xAxisScales[xAxisScale].minInterval,
 				maxInterval: xAxisScales[xAxisScale].maxInterval,
 				axisLabel: {
-					formatter: xAxisScales[xAxisScale].formatter,
+					formatter: xAxisScales[xAxisScale].formatter(dateLocale),
 					// on narrow screens skip labels that would overlap instead of drawing them on top of each other
 					hideOverlap: true,
 				},
@@ -78,7 +89,7 @@ export function ReadingsChart({
 				axisPointer: {
 					label: {
 						// sets the tooltip header
-						formatter: ({value}) => formatDateTime(value),
+						formatter: ({value}) => formatDateTime(value, dateLocale),
 					},
 				},
 			},
@@ -117,7 +128,7 @@ export function ReadingsChart({
 				{type: 'inside'},
 				{
 					type: 'slider',
-					labelFormatter: (value) => formatDateTime(value),
+					labelFormatter: (value) => formatDateTime(value, dateLocale),
 				},
 			],
 			series: [

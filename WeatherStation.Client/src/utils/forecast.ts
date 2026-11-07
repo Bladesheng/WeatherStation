@@ -1,4 +1,6 @@
 import type {IForecastResponse} from '@/types/forecastResponse.ts';
+import type {IDateLocale} from '@/contexts/DateLocaleContext.tsx';
+import {capitalize} from '@/utils/utils.ts';
 
 export const HOUR = 60 * 60 * 1000;
 export const DAY = 24 * HOUR;
@@ -101,15 +103,15 @@ export function formatPrecipitation(value: number): string {
 	return `${value.toFixed(1)} mm`;
 }
 
-export function relativeDayName(date: Date): string | undefined {
+export function relativeDayName(date: Date, locale: IDateLocale): string | undefined {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
 
 	const dayDiff = Math.round((date.getTime() - today.getTime()) / DAY);
-	if (dayDiff === 0) {
-		return 'Today';
-	} else if (dayDiff === 1) {
-		return 'Tomorrow';
+	if (dayDiff === 0 || dayDiff === 1) {
+		return capitalize(
+			new Intl.RelativeTimeFormat(locale, {numeric: 'auto'}).format(dayDiff, 'day')
+		);
 	}
 }
 

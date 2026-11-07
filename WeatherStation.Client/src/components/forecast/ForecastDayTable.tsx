@@ -7,6 +7,8 @@ import {
 	weatherIconUrl,
 	type IForecastDay,
 } from '@/utils/forecast.ts';
+import {useDateLocale} from '@/contexts/DateLocaleContext.tsx';
+import {capitalize} from '@/utils/utils.ts';
 
 const headerCell = 'border-b border-base-content/10 px-2 py-1.5 text-xs opacity-70';
 const cell = 'border-b border-base-content/10 px-2 py-1.75 tabular-nums';
@@ -25,12 +27,16 @@ function SunTime({icon, label, time}: {icon: string; label: string; time?: Date}
 }
 
 export function ForecastDayTable({day}: {day: IForecastDay}) {
-	const relativeName = relativeDayName(day.date);
-	const dateName = day.date.toLocaleDateString('en', {
-		weekday: 'long',
-		month: 'long',
-		day: 'numeric',
-	});
+	const {dateLocale} = useDateLocale();
+
+	const relativeName = relativeDayName(day.date, dateLocale);
+	const dateName = capitalize(
+		day.date.toLocaleDateString(dateLocale, {
+			weekday: 'long',
+			month: 'long',
+			day: 'numeric',
+		})
+	);
 
 	return (
 		<div className="flex flex-col gap-2.5 rounded border border-base-content/10 bg-base-200 px-4 py-3">

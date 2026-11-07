@@ -9,6 +9,10 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuf
 	return Uint8Array.from(rawData, (char) => char.charCodeAt(0));
 }
 
+export function capitalize(text: string) {
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 // dividing by 1 / step instead of multiplying by step avoids float noise like 993.4000000000001
 export function roundDown(value: number, step: number) {
 	return Math.floor(value / step) / (1 / step);

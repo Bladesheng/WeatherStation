@@ -4,18 +4,26 @@ import {
 	editPushSubscriptionMutationOptions,
 } from '@/utils/queries.ts';
 import type {INotificationDeliveryTime} from '@/types/notificationDeliveryTime.ts';
+import {type IDateLocale, useDateLocale} from '@/contexts/DateLocaleContext.tsx';
+import {capitalize} from '@/utils/utils.ts';
 
-const weekDays = [
-	{day: 1, label: 'M', name: 'Monday'},
-	{day: 2, label: 'T', name: 'Tuesday'},
-	{day: 3, label: 'W', name: 'Wednesday'},
-	{day: 4, label: 'T', name: 'Thursday'},
-	{day: 5, label: 'F', name: 'Friday'},
-	{day: 6, label: 'S', name: 'Saturday'},
-	{day: 0, label: 'S', name: 'Sunday'},
-];
+// Monday first
+const weekDayNumbers = [1, 2, 3, 4, 5, 6, 0];
+
+function weekDays(locale: IDateLocale) {
+	return weekDayNumbers.map((day) => {
+		// 2023-01-01 was a Sunday, so the 1st + day lands on the right weekday
+		const date = new Date(2023, 0, 1 + day);
+		return {
+			day,
+			label: date.toLocaleDateString(locale, {weekday: 'narrow'}).toUpperCase(),
+			name: capitalize(date.toLocaleDateString(locale, {weekday: 'long'})),
+		};
+	});
+}
 
 export function NotificationRow({notification}: {notification: INotificationDeliveryTime}) {
+	const {dateLocale} = useDateLocale();
 	const editMutation = useMutation(editPushSubscriptionMutationOptions());
 	const deleteMutation = useMutation(deletePushSubscriptionMutationOptions());
 
@@ -72,7 +80,7 @@ export function NotificationRow({notification}: {notification: INotificationDeli
 				aria-label="Days"
 				className="col-span-2 row-start-2 flex justify-center gap-1.5 sm:col-span-1 sm:col-start-2 sm:row-start-1"
 			>
-				{weekDays.map(({day, label, name}) => (
+				{weekDays(dateLocale).map(({day, label, name}) => (
 					<button
 						key={day}
 						type="button"

@@ -2,6 +2,8 @@ import {Link, Outlet, createFileRoute, useParams} from '@tanstack/react-router';
 import {useState} from 'react';
 import {Temporal} from 'temporal-polyfill';
 import {historyEnd, historyStart, isHistoryMonth} from '@/utils/history.ts';
+import {useDateLocale} from '@/contexts/DateLocaleContext.tsx';
+import {capitalize} from '@/utils/utils.ts';
 
 export const Route = createFileRoute('/history')({
 	component: HistoryLayout,
@@ -21,6 +23,7 @@ const years = Array.from({length: historyEnd.year - historyStart.year + 1}, (_, 
 });
 
 function HistoryLayout() {
+	const {dateLocale} = useDateLocale();
 	const params = useParams({strict: false});
 	const selectedYear = Number(params.year);
 	const selectedMonth = Number(params.month);
@@ -67,7 +70,9 @@ function HistoryLayout() {
 							{isOpen && (
 								<div className="grid grid-cols-3 gap-1">
 									{months.map(({month, isDisabled}) => {
-										const label = month.toLocaleString('en', {month: 'short', calendar: 'iso8601'});
+										const label = capitalize(
+											month.toLocaleString(dateLocale, {month: 'short', calendar: 'iso8601'})
+										);
 
 										const isSelected = year === selectedYear && month.month === selectedMonth;
 
