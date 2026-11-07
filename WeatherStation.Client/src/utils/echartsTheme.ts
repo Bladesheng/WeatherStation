@@ -60,6 +60,8 @@ export const chartColors = {
 	temperatureDht: cssColorVariableToHex('--color-orange-500'),
 	humidity: cssColorVariableToHex('--color-blue-400'),
 	pressure: cssColorVariableToHex('--color-purple-400'),
+	precipitation: cssColorVariableToHex('--color-blue-400'),
+	cloudCover: cssColorVariableToHex('--color-gray-400'),
 };
 
 function cssColorVariableToHex(cssColorName: string): string {

@@ -4,15 +4,7 @@ import {useTheme} from '@/contexts/ThemeContext.tsx';
 import type {EChartsOption} from 'echarts';
 import {chartColors} from '@/utils/echartsTheme.ts';
 import {useState} from 'react';
-
-// dividing by 1 / step instead of multiplying by step avoids float noise like 993.4000000000001
-function roundDown(value: number, step: number) {
-	return Math.floor(value / step) / (1 / step);
-}
-
-function roundUp(value: number, step: number) {
-	return Math.ceil(value / step) / (1 / step);
-}
+import {roundDown, roundUp} from '@/utils/utils.ts';
 
 function formatDateTime(value: number | string | Date) {
 	return new Date(value).toLocaleString(undefined, {
