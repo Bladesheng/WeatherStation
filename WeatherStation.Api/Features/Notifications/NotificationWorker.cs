@@ -54,6 +54,10 @@ public class NotificationWorker(
             .Where(s => s.SendAt <= nowCetTime)
             // But only those that have not been sent today yet.
             .Where(s => s.LastSentAt.Date < nowUtcDate)
+            // And only on the selected days.
+            // Npgsql translates this to `= ANY ("Days")`, Rider just doesn't know about it.
+            // ReSharper disable once EntityFramework.UnsupportedServerSideFunctionCall
+            .Where(s => s.Days.Contains(nowCet.DayOfWeek))
             .ToListAsync(ct);
 
         if (dueSubscriptions.Count == 0)

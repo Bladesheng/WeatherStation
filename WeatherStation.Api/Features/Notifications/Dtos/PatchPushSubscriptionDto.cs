@@ -6,5 +6,7 @@ public record PatchPushSubscriptionDto
 
     public required string Endpoint { get; init; }
 
-    public required TimeOnly SendAt { get; init; }
+    public TimeOnly? SendAt { get; init; }
+
+    public DayOfWeek[]? Days { get; init; }
 };

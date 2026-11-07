@@ -85,7 +85,7 @@ export function allSubscriptionsQueryOptions() {
 
 export function createPushSubscriptionMutationOptions() {
 	return mutationOptions({
-		mutationFn: async (sendAt: string, {client}) => {
+		mutationFn: async ({sendAt, days}: {sendAt: string; days: number[]}, {client}) => {
 			let permission = Notification.permission;
 			// user has not decided yet - show them prompt
 			if (permission === 'default') {
@@ -117,6 +117,7 @@ export function createPushSubscriptionMutationOptions() {
 					p256dh: pushSubscriptionJson.keys.p256dh,
 					auth: pushSubscriptionJson.keys.auth,
 					sendAt,
+					days,
 				},
 			});
 		},
@@ -129,7 +130,7 @@ export function createPushSubscriptionMutationOptions() {
 
 export function editPushSubscriptionMutationOptions() {
 	return mutationOptions({
-		mutationFn: async ({id, sendAt}: {id: number; sendAt: string}) => {
+		mutationFn: async ({id, sendAt, days}: {id: number; sendAt?: string; days?: number[]}) => {
 			const registration = await navigator.serviceWorker.ready;
 			const pushSubscription = await registration.pushManager.getSubscription();
 
@@ -143,6 +144,7 @@ export function editPushSubscriptionMutationOptions() {
 					id,
 					endpoint: pushSubscription.endpoint,
 					sendAt,
+					days,
 				},
 			});
 		},

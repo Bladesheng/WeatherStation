@@ -10,7 +10,9 @@ public class PushSubscription
     [Required] [StringLength(256)] public required string P256Dh { get; set; }
     [Required] [StringLength(256)] public required string Auth { get; set; }
 
-    public TimeOnly SendAt { get; set; } = new(6, 0);
+    public TimeOnly SendAt { get; set; }
+
+    public DayOfWeek[] Days { get; set; } = Enum.GetValues<DayOfWeek>();
 
     public DateTime LastSentAt { get; set; } = DateTime.UnixEpoch;
 

@@ -29,7 +29,8 @@ public class NotificationsController(
             .Select(s => new
             {
                 s.Id,
-                s.SendAt
+                s.SendAt,
+                s.Days
             })
             .ToListAsync();
 
@@ -41,12 +42,16 @@ public class NotificationsController(
         [FromBody] CreatePushSubscriptionDto dto
     )
     {
+        if (!dto.Days.All(Enum.IsDefined))
+            return BadRequest("Invalid day of week.");
+
         var pushSubscription = new PushSubscription
         {
             Auth = dto.Auth,
             Endpoint = dto.Endpoint,
             P256Dh = dto.P256Dh,
-            SendAt = dto.SendAt
+            SendAt = dto.SendAt,
+            Days = NormalizeDays(dto.Days)
         };
 
         dbContext.Add(pushSubscription);
@@ -61,13 +66,23 @@ public class NotificationsController(
         [FromBody] PatchPushSubscriptionDto dto
     )
     {
+        if (dto.Days is not null && !dto.Days.All(Enum.IsDefined))
+            return BadRequest("Invalid day of week.");
+
         var affected = await dbContext.PushSubscriptions
             .Where(s => s.Id == dto.Id && s.Endpoint == dto.Endpoint)
-            .ExecuteUpdateAsync(setters => setters
-                .SetProperty(s => s.SendAt, dto.SendAt)
-                // Reset LastSentAt, so that you can receive notification from this subscription today again.
-                .SetProperty(s => s.LastSentAt, DateTime.UnixEpoch)
-            );
+            .ExecuteUpdateAsync(setters =>
+            {
+                if (dto.SendAt is { } sendAt)
+                {
+                    setters.SetProperty(s => s.SendAt, sendAt);
+                    // Reset LastSentAt, so that you can receive notification from this subscription today again.
+                    setters.SetProperty(s => s.LastSentAt, DateTime.UnixEpoch);
+                }
+
+                if (dto.Days is not null)
+                    setters.SetProperty(s => s.Days, NormalizeDays(dto.Days));
+            });
 
         if (affected == 0)
             return NotFound();
@@ -89,5 +104,12 @@ public class NotificationsController(
             return NotFound();
 
         return NoContent();
+    }
+
+
+    // Days are a set - drop duplicates and keep them in a stable order.
+    private static DayOfWeek[] NormalizeDays(DayOfWeek[] days)
+    {
+        return days.Distinct().Order().ToArray();
     }
 }

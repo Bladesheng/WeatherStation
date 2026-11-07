@@ -38,6 +38,10 @@ namespace WeatherStation.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.PrimitiveCollection<int[]>("Days")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
+
                     b.Property<string>("Endpoint")
                         .IsRequired()
                         .HasMaxLength(256)

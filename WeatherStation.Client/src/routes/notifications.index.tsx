@@ -5,8 +5,9 @@ import {
 	allSubscriptionsQueryOptions,
 	createPushSubscriptionMutationOptions,
 } from '@/utils/queries.ts';
-import {useState} from 'react';
-import {NotificationDeliveryTime} from '@/components/notifications/NotificationDeliveryTime.tsx';
+import {NotificationRow} from '@/components/notifications/NotificationRow.tsx';
+
+const allDays = [0, 1, 2, 3, 4, 5, 6];
 
 export const Route = createFileRoute('/notifications/')({
 	component: Notifications,
@@ -23,31 +24,37 @@ function Notifications() {
 
 	const createMutation = useMutation(createPushSubscriptionMutationOptions());
 
-	const [sendAt, setSendAt] = useState('06:00');
-
 	return (
-		<div>
-			<input
-				type="time"
-				className="input"
-				defaultValue={sendAt}
-				onChange={(e) => setSendAt(e.currentTarget.value)}
-				disabled={createMutation.isPending}
-			/>
+		<main className="m-4 flex flex-1 flex-col gap-2">
+			<div className="overflow-hidden rounded border border-base-content/10 bg-base-200">
+				<ul>
+					{query.data.map((n) => (
+						<NotificationRow key={n.id} notification={n} />
+					))}
+				</ul>
 
-			<button
-				onClick={() => createMutation.mutate(sendAt)}
-				className="btn"
-				disabled={createMutation.isPending}
-			>
-				Create new notification
-			</button>
+				{query.data.length === 0 && (
+					<div className="border-b border-base-content/10 px-4 py-7 text-center text-sm opacity-70">
+						No notifications yet.
+					</div>
+				)}
 
-			<ul>
-				{query.data.map((n) => (
-					<NotificationDeliveryTime key={n.id} notification={n} />
-				))}
-			</ul>
-		</div>
+				<button
+					type="button"
+					className="btn h-12 w-full rounded-none btn-ghost font-medium"
+					onClick={() => createMutation.mutate({sendAt: '07:00', days: allDays})}
+					disabled={createMutation.isPending}
+				>
+					<span
+						className={
+							createMutation.isPending
+								? 'loading loading-spinner'
+								: 'icon-[material-symbols--add] text-xl'
+						}
+					/>
+					Add notification
+				</button>
+			</div>
+		</main>
 	);
 }
