@@ -7,7 +7,7 @@ import {urlBase64ToUint8Array} from '@/utils/utils.ts';
 import type {IReadingsResponse} from '@/types/readingsResponse.ts';
 
 const api = ofetch.create({
-	baseURL: import.meta.env.DEV ? 'http://localhost:5087' : 'https://weather-api.bladesheng.com',
+	baseURL: import.meta.env.DEV ? 'http://localhost:5087' : 'https://weatherapi.bladesheng.com',
 });
 
 export function readings24QueryOptions() {
