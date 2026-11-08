@@ -14,7 +14,7 @@ const DateLocaleContext = createContext<IDateLocaleContext | undefined>(undefine
 
 export function DateLocaleProvider({children}: {children: ReactNode}) {
 	const [dateLocale, setDateLocale] = useState<IDateLocale>(
-		() => (localStorage.getItem(DATE_LOCALE_KEY) as IDateLocale | null) ?? 'cs'
+		() => (localStorage.getItem(DATE_LOCALE_KEY) as IDateLocale | null) ?? 'en'
 	);
 
 	useEffect(() => {
