@@ -35,6 +35,13 @@ function Forecast() {
 			<ForecastChart points={points} selectedDay={days[selectedDayIndex]} />
 
 			<ForecastDayTable day={days[selectedDayIndex]} />
+
+			<footer className="text-center text-xs">
+				Forecast data source:{' '}
+				<a className="link link-primary" target="_blank" href="https://api.met.no/">
+					Met.no API
+				</a>
+			</footer>
 		</main>
 	);
 }
