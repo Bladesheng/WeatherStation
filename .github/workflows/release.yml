@@ -1,0 +1,63 @@
+name: Cloudflare Pages build and deployment
+
+on:
+  push:
+    branches: [main]
+
+  # manual trigger
+  workflow_dispatch:
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  job-1:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: "pnpm"
+          cache-dependency-path: WeatherStation.Client/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: WeatherStation.Client
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        working-directory: WeatherStation.Client
+        run: pnpm run typecheck
+
+      - name: Lint
+        working-directory: WeatherStation.Client
+        run: pnpm run lint
+
+      - name: Build
+        working-directory: WeatherStation.Client
+        run: pnpm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          # Create new pages project with `pnpx wrangler pages project create PROJECT_NAME`.
+          # Get the credentials here:
+          # https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/#get-credentials-from-cloudflare
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy WeatherStation.Client/dist --project-name=weatherstation
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
