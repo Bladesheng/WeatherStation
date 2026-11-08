@@ -46,7 +46,7 @@ function formatDelta(delta: number, fractionDigits: number): string {
 
 export function CurrentStats({readings}: {readings: IReading[]}) {
 	const {dateLocale} = useDateLocale();
-	const [now, setNow] = useState(Date.now());
+	const [now, setNow] = useState(() => Date.now());
 	useEffect(() => {
 		const interval = setInterval(() => setNow(Date.now()), 10 * 1000);
 		return () => clearInterval(interval);
@@ -56,14 +56,14 @@ export function CurrentStats({readings}: {readings: IReading[]}) {
 
 	const currentHumidity = Math.round(readings.at(-1)!.humidityDht);
 
-	const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
+	const hourAgo = new Date(now - 60 * 60 * 1000);
 	const hourAgoReading =
 		readings.findLast((reading) => reading.createdAt <= hourAgo) ?? readings[0];
 	const temperatureDelta =
 		Math.round((currentTemperature - hourAgoReading.temperatureAvg) * 10) / 10;
 	const humidityDelta = currentHumidity - Math.round(hourAgoReading.humidityDht);
 
-	const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+	const dayAgo = new Date(now - 24 * 60 * 60 * 1000);
 	const dayAgoReading = readings.findLast((reading) => reading.createdAt <= dayAgo) ?? readings[0];
 	const yesterdayDelta = Math.round((currentTemperature - dayAgoReading.temperatureAvg) * 10) / 10;
 	let yesterdayComparison = 'Same as';
@@ -73,7 +73,7 @@ export function CurrentStats({readings}: {readings: IReading[]}) {
 		yesterdayComparison = 'Colder than';
 	}
 
-	const midnight = new Date();
+	const midnight = new Date(now);
 	midnight.setHours(0, 0, 0, 0);
 	const todayReadings = readings.filter((reading) => reading.createdAt >= midnight);
 	if (todayReadings.length === 0) {
