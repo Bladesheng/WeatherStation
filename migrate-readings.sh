@@ -2,12 +2,13 @@
 # copy readings from db.sqlite3 into Postgres "Readings".
 # Safe to re-run: existing ids are skipped.
 #
-# Usage: ./migrate-readings.sh [postgres-url]
-#   default: postgresql://dev:dev@localhost:5432/weatherstation
+# Usage: ./migrate-readings.sh [postgres-url] [sqlite-path]
+#   postgres-url default: postgresql://dev:dev@localhost:5432/weatherstation
+#   sqlite-path default:  db.sqlite3 next to this script
 set -euo pipefail
 
-SQLITE_DB="$(dirname "$0")/db.sqlite3"
 PG_URL="${1:-postgresql://dev:dev@localhost:5432/weatherstation}"
+SQLITE_DB="${2:-$(dirname "$0")/db.sqlite3}"
 CSV="$(mktemp)"
 trap 'rm -f "$CSV"' EXIT
 
