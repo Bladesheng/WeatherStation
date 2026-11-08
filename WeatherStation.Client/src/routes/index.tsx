@@ -15,7 +15,7 @@ export const Route = createFileRoute('/')({
 	}),
 });
 
-export function Index() {
+function Index() {
 	const readingsQuery = useSuspenseQuery(readings24QueryOptions());
 
 	return (
